@@ -7,3 +7,4 @@ applications:
     command: node server.js
     services:
       - braincheck-ai
+      - braincheck-db
