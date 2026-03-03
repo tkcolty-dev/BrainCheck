@@ -434,12 +434,138 @@ body{
 /* ── History mode card ── */
 .mode-card.history::before{background:linear-gradient(90deg,var(--purple-light),#ec4899)}
 
+/* ── Game Mode Picker ── */
+.game-mode-cards{display:flex;gap:16px;margin-top:clamp(24px,4vh,40px);justify-content:center;max-width:700px;width:100%;padding:0 10px;flex-wrap:wrap}
+.game-mode-card{
+  flex:1;min-width:160px;max-width:200px;background:var(--card);border-radius:var(--radius);
+  padding:24px 16px;text-align:center;cursor:pointer;position:relative;
+  box-shadow:0 1px 3px rgba(0,0,0,.1),0 8px 24px rgba(0,0,0,.12);
+  transition:transform .2s ease,box-shadow .2s ease;overflow:hidden;
+}
+.game-mode-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px}
+.game-mode-card.gm-study::before{background:linear-gradient(90deg,var(--blue),var(--purple))}
+.game-mode-card.gm-tower::before{background:linear-gradient(90deg,var(--red),var(--yellow))}
+.game-mode-card.gm-survival::before{background:linear-gradient(90deg,#7c3aed,#ec4899)}
+.game-mode-card:hover{transform:translateY(-4px);box-shadow:0 2px 6px rgba(0,0,0,.1),0 12px 32px rgba(0,0,0,.18)}
+.game-mode-card:active{transform:translateY(-1px)}
+.game-mode-card .gm-icon{font-size:2.4rem;display:block;margin-bottom:8px}
+.game-mode-card h3{font-family:var(--font-display);font-weight:800;font-size:1.05rem;margin-bottom:4px;color:var(--text)}
+.game-mode-card p{font-weight:500;color:var(--text-muted);font-size:.78rem;line-height:1.4}
+
+/* ── Mode-specific HUD visibility ── */
+.hud-tower,.hud-survival{display:none!important}
+.hp-bar-container{display:none}
+.mode-tower .hud-tower{display:flex!important}
+.mode-tower .study-only{display:none!important}
+.mode-tower .hp-bar-container{display:block}
+.mode-tower .progress-dots{display:none}
+.mode-survival .hud-survival{display:flex!important}
+.mode-survival .study-only{display:none!important}
+.mode-survival .progress-dots{display:none}
+
+/* ── HP Bar ── */
+.hp-bar-container{width:100%;max-width:620px;margin-bottom:16px}
+.hp-bar-label{color:rgba(255,255,255,.5);font-weight:700;font-size:.75rem;margin-bottom:4px;display:flex;justify-content:space-between}
+.hp-bar{height:10px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.hp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--red),var(--green));transition:width .4s ease}
+
+/* ── Hearts ── */
+.hearts-display{font-size:1.2rem;letter-spacing:2px}
+.hearts-display .heart-empty{opacity:.25}
+
+/* ── Flash animations ── */
+@keyframes flashDamage{0%{background-color:transparent}15%{background-color:rgba(239,68,68,.15)}100%{background-color:transparent}}
+@keyframes flashHeal{0%{background-color:transparent}15%{background-color:rgba(16,185,129,.12)}100%{background-color:transparent}}
+.flash-damage{animation:flashDamage .6s ease}
+.flash-heal{animation:flashHeal .6s ease}
+
+/* ── Game Over / End Screen ── */
+.game-over-content{display:none}
+.end-card.show-game-over .study-end-content{display:none}
+.end-card.show-game-over .game-over-content{display:block}
+.game-over-icon{font-size:3.2rem;margin-bottom:8px;display:block}
+.game-over-title{font-family:var(--font-display);font-weight:900;font-size:1.6rem;color:var(--text);margin-bottom:16px}
+.stat-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.stat-box{background:rgba(124,58,237,.06);border-radius:10px;padding:10px 16px;text-align:center;min-width:80px}
+.stat-box .stat-val{font-family:var(--font-display);font-weight:800;font-size:1.3rem;color:var(--purple)}
+.stat-box .stat-label{font-weight:600;font-size:.72rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* ── Tower Defense ── */
+.td-container{width:100%;max-width:740px;margin-top:16px}
+.td-hud{display:flex;justify-content:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.td-hud-item{
+  background:rgba(255,255,255,.08);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.08);border-radius:10px;
+  padding:6px 14px;color:#fff;font-weight:700;font-size:.85rem;
+  display:flex;align-items:center;gap:6px;
+}
+.td-hud-item .td-val{font-family:var(--font-display);font-weight:800;color:var(--yellow)}
+.td-canvas-wrap{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.2);margin:0 auto;max-width:700px}
+.td-canvas-wrap canvas{display:block;width:100%;background:#2d5a27}
+.td-shop{display:flex;gap:8px;margin-top:12px;justify-content:center;flex-wrap:wrap;align-items:center}
+.td-tower-btn{
+  background:var(--card);border-radius:10px;padding:8px 12px;cursor:pointer;
+  font-weight:700;font-size:.8rem;color:var(--text);text-align:center;
+  transition:all .15s;border:2px solid transparent;min-width:80px;
+}
+.td-tower-btn:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.td-tower-btn.selected{border-color:var(--yellow);box-shadow:0 0 0 2px rgba(245,158,11,.3)}
+.td-tower-btn .td-cost{font-size:.7rem;color:var(--text-muted)}
+.td-start-wave{
+  background:var(--green);color:#fff;border:none;border-radius:10px;
+  padding:10px 24px;font-family:var(--font-body);font-weight:700;
+  font-size:.9rem;cursor:pointer;transition:all .15s;
+}
+.td-start-wave:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.td-start-wave:disabled{opacity:.5;cursor:default;transform:none;box-shadow:none}
+.td-question-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);
+  display:none;align-items:center;justify-content:center;z-index:10;border-radius:12px;
+}
+.td-question-overlay.active{display:flex}
+.td-q-card{
+  background:var(--card);border-radius:16px;padding:28px 24px;max-width:420px;width:90%;
+  text-align:center;animation:cardIn .3s ease;
+}
+.td-q-progress{font-family:var(--font-display);font-weight:700;font-size:.75rem;color:var(--purple);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px}
+.td-q-text{font-weight:700;font-size:1.05rem;line-height:1.5;color:var(--text);margin-bottom:16px}
+.td-q-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.td-q-choice{
+  border:none;border-radius:12px;padding:12px;cursor:pointer;
+  font-family:var(--font-body);font-weight:700;font-size:.85rem;
+  color:#fff;text-align:left;display:flex;align-items:center;gap:10px;transition:all .15s;
+}
+.td-q-choice:hover{transform:translateY(-2px)}
+.td-q-choice.disabled{pointer-events:none;opacity:.5}
+.td-q-choice.flash-right{opacity:1!important;box-shadow:0 0 0 3px rgba(16,185,129,.6)}
+.td-q-choice.flash-wrong{animation:flashWrong .5s ease}
+.td-q-result{margin-top:12px;font-weight:600;font-size:.85rem;min-height:24px;color:var(--text-muted)}
+.td-wave-banner{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  background:rgba(0,0,0,.8);color:#fff;font-family:var(--font-display);
+  font-weight:800;font-size:1.5rem;padding:12px 32px;border-radius:12px;
+  z-index:5;pointer-events:none;animation:waveBanner 2s ease forwards;
+}
+@keyframes waveBanner{0%{opacity:0;transform:translate(-50%,-50%) scale(.8)}10%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0}}
+.td-info{color:rgba(255,255,255,.4);font-weight:600;font-size:.78rem;text-align:center;margin-top:8px}
+.td-speed-btn{
+  background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;padding:8px 14px;font-family:var(--font-body);font-weight:700;
+  font-size:.8rem;cursor:pointer;transition:all .15s;
+}
+.td-speed-btn:hover{background:rgba(255,255,255,.2)}
+
 /* ── Responsive ── */
 @media(max-width:700px){
   .mode-cards{flex-direction:column;align-items:center;gap:12px}
   .mode-card{max-width:340px;width:100%;padding:20px 18px}
   .btn-back{position:relative;top:0;left:0;margin-bottom:8px;align-self:flex-start}
-  .quiz-hud{justify-content:center}
+  .quiz-hud{justify-content:center;flex-wrap:wrap}
+  .game-mode-cards{flex-direction:column;align-items:center}
+  .game-mode-card{max-width:280px;width:100%}
+  .td-tower-btn{padding:6px 8px;min-width:70px;font-size:.75rem}
+  .td-start-wave{padding:8px 16px;font-size:.82rem}
+  .td-q-choices{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -600,6 +726,74 @@ body{
   </button>
 </div>
 
+<!-- ════════ MODE PICKER ════════ -->
+<div class="screen" id="modePicker">
+  <button class="btn btn-ghost btn-back" onclick="showScreen('home')">← Back</button>
+  <div class="section-title">Choose Game Mode</div>
+  <p style="color:rgba(255,255,255,.45);font-weight:600;font-size:.9rem;text-align:center;margin-top:8px">
+    How do you want to play this quiz?
+  </p>
+  <div class="game-mode-cards">
+    <div class="game-mode-card gm-study" onclick="selectMode('study')">
+      <span class="gm-icon">📖</span>
+      <h3>Study Mode</h3>
+      <p>Answer all questions. Track your score and accuracy.</p>
+    </div>
+    <div class="game-mode-card gm-tower" onclick="selectMode('tower')">
+      <span class="gm-icon">🏰</span>
+      <h3>Tower Defense <span style="font-size:.6em;background:var(--yellow);color:#000;padding:2px 6px;border-radius:6px;vertical-align:middle;letter-spacing:.5px">BETA</span></h3>
+      <p>Protect your base! Wrong answers deal damage. Earn gold to build towers.</p>
+    </div>
+    <div class="game-mode-card gm-survival" onclick="selectMode('survival')">
+      <span class="gm-icon">💀</span>
+      <h3>Survival</h3>
+      <p>3 lives. Timer gets faster. How long can you last?</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ TOWER DEFENSE ════════ -->
+<div class="screen" id="towerDefense">
+  <button class="btn btn-ghost btn-back" onclick="tdQuit()">← Quit</button>
+  <div class="td-container">
+    <div class="td-hud">
+      <div class="td-hud-item">❤️ <span class="td-val" id="tdLives">20</span></div>
+      <div class="td-hud-item">🪙 <span class="td-val" id="tdGold">100</span></div>
+      <div class="td-hud-item">🌊 Wave <span class="td-val" id="tdWave">0</span></div>
+      <div class="td-hud-item">⭐ <span class="td-val" id="tdScore">0</span></div>
+      <div class="td-hud-item" style="display:none">👾 <span class="td-val" id="tdEnemies">0</span></div>
+    </div>
+    <div class="td-canvas-wrap">
+      <canvas id="tdCanvas" width="700" height="450"></canvas>
+      <div class="td-question-overlay" id="tdQuestionOverlay">
+        <div class="td-q-card">
+          <div class="td-q-progress" id="tdQProgress">Question 1/3</div>
+          <div class="td-q-text" id="tdQText"></div>
+          <div class="td-q-choices" id="tdQChoices"></div>
+          <div class="td-q-result" id="tdQResult"></div>
+        </div>
+      </div>
+    </div>
+    <div class="td-shop" id="tdShop">
+      <div class="td-tower-btn" onclick="tdSelectTower('arrow')">
+        <div>🏹 Arrow</div><div class="td-cost">15g · Fast</div>
+      </div>
+      <div class="td-tower-btn" onclick="tdSelectTower('cannon')">
+        <div>💣 Cannon</div><div class="td-cost">25g · Splash</div>
+      </div>
+      <div class="td-tower-btn" onclick="tdSelectTower('ice')">
+        <div>❄️ Ice</div><div class="td-cost">20g · Slow</div>
+      </div>
+      <div class="td-tower-btn" onclick="tdSelectTower('sniper')">
+        <div>🎯 Sniper</div><div class="td-cost">35g · Long Range</div>
+      </div>
+      <button class="td-speed-btn" id="tdSpeedBtn" onclick="tdToggleSpeed()">1x</button>
+      <button class="td-start-wave" id="tdStartWaveBtn" onclick="tdStartWave()">▶ Send Wave</button>
+    </div>
+    <div class="td-info" id="tdInfo">Select a tower and click on the map to place it</div>
+  </div>
+</div>
+
 <!-- ════════ QUIZ PLAY ════════ -->
 <div class="screen" id="quizPlay">
   <button class="btn btn-ghost btn-back" onclick="quitQuiz()">← Quit</button>
@@ -608,8 +802,21 @@ body{
     <div class="quiz-meta" id="qpMeta"></div>
   </div>
   <div class="quiz-hud">
-    <div class="hud-item">⭐ <span class="hud-score" id="qpScore">0</span></div>
-    <div class="hud-item" id="qpStreakBox">🔥 <span class="hud-streak" id="qpStreak">0</span></div>
+    <div class="hud-item study-only">⭐ <span class="hud-score" id="qpScore">0</span></div>
+    <div class="hud-item study-only" id="qpStreakBox">🔥 <span class="hud-streak" id="qpStreak">0</span></div>
+    <!-- Tower Defense HUD -->
+    <div class="hud-item hud-tower">❤️ <span id="towerHPText">20/20</span></div>
+    <div class="hud-item hud-tower">🏰 <span id="towerCountText">0</span></div>
+    <div class="hud-item hud-tower">🪙 <span id="towerGoldText">0</span></div>
+    <div class="hud-item hud-tower">🌊 Wave <span id="towerWaveText">1</span></div>
+    <!-- Survival HUD -->
+    <div class="hud-item hud-survival"><span class="hearts-display" id="survivalHeartsText">❤️❤️❤️</span></div>
+    <div class="hud-item hud-survival">⭐ <span id="survivalScoreText">0</span></div>
+    <div class="hud-item hud-survival">💀 <span id="survivalSurvivedText">0</span> survived</div>
+  </div>
+  <div class="hp-bar-container" id="hpBarContainer">
+    <div class="hp-bar-label"><span>Base HP</span><span id="hpBarLabel">20/20</span></div>
+    <div class="hp-bar"><div class="hp-fill" id="hpFill" style="width:100%"></div></div>
   </div>
   <div class="progress-dots" id="progressDots"></div>
   <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
@@ -623,11 +830,20 @@ body{
 
 <!-- ════════ QUIZ END ════════ -->
 <div class="screen" id="quizEnd">
-  <div class="end-card">
-    <span class="trophy" id="endTrophy">🏆</span>
-    <div class="final-label">Final Score</div>
-    <div class="final-score" id="endScore">0</div>
-    <div class="final-correct" id="endCorrect">0/0 correct</div>
+  <div class="end-card" id="endCard">
+    <!-- Study Mode End -->
+    <div class="study-end-content">
+      <span class="trophy" id="endTrophy">🏆</span>
+      <div class="final-label">Final Score</div>
+      <div class="final-score" id="endScore">0</div>
+      <div class="final-correct" id="endCorrect">0/0 correct</div>
+    </div>
+    <!-- Game Over Content (Tower/Survival) -->
+    <div class="game-over-content">
+      <span class="game-over-icon" id="gameOverIcon">💥</span>
+      <div class="game-over-title" id="gameOverTitle">Game Over!</div>
+      <div class="stat-row" id="gameOverStats"></div>
+    </div>
     <div class="end-btns">
       <button class="btn btn-blue" onclick="retryQuiz()">Retry</button>
       <button class="btn btn-purple" onclick="showScreen('home')">Home</button>
@@ -924,7 +1140,7 @@ async function generateQuiz() {
     if (data.raw) throw new Error('Could not parse quiz. Please try again.');
 
     quizData = data;
-    startQuiz();
+    showModePicker();
   } catch (err) {
     alert('Error: ' + err.message);
   }
@@ -935,17 +1151,70 @@ async function generateQuiz() {
 let currentQ = 0, score = 0, streak = 0, correctCount = 0, timerInterval = null, timeLeft = 30;
 let dotResults = []; // track per-question results for progress dots
 
+// ─── Game Mode State ───
+let gameMode = 'study';
+let endlessQuestionIndex = 0, totalQuestionsAnswered = 0, bestStreak = 0;
+let currentTimerDuration = 30;
+// Tower Defense
+let towerHP = 20, towerMaxHP = 20, towerGold = 0, towerCount = 0, towerWave = 1;
+// Survival
+let survivalLives = 3, survivalMaxLives = 3, survivalTimerBase = 30;
+
+function showModePicker() {
+  hideLoading();
+  showScreen('modePicker');
+}
+
+function selectMode(mode) {
+  gameMode = mode;
+  if (mode === 'tower') {
+    startTowerDefense();
+  } else {
+    startQuiz();
+  }
+}
+
+function shuffleQuestions() {
+  var arr = quizData.questions;
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+}
+
 function startQuiz() {
   currentQ = 0; score = 0; streak = 0; correctCount = 0; lastSavedQuizKey = null;
-  dotResults = new Array(quizData.questions.length).fill(null);
+  bestStreak = 0; totalQuestionsAnswered = 0; endlessQuestionIndex = 0;
+
+  var playEl = document.getElementById('quizPlay');
+  playEl.classList.remove('mode-study', 'mode-tower', 'mode-survival');
+  document.getElementById('endCard').classList.remove('show-game-over');
+
+  if (gameMode === 'study') {
+    dotResults = new Array(quizData.questions.length).fill(null);
+    playEl.classList.add('mode-study');
+  } else if (gameMode === 'tower') {
+    towerHP = 20; towerMaxHP = 20; towerGold = 0; towerCount = 0; towerWave = 1;
+    playEl.classList.add('mode-tower');
+    shuffleQuestions();
+    updateTowerHUD();
+  } else if (gameMode === 'survival') {
+    survivalLives = 3; survivalMaxLives = 3; survivalTimerBase = 30;
+    playEl.classList.add('mode-survival');
+    shuffleQuestions();
+    updateSurvivalHUD();
+  }
+
   document.getElementById('qpTitle').textContent = quizData.title || 'Quiz Time!';
-  document.getElementById('qpMeta').textContent = quizData.subject ? quizData.subject + ' \u00b7 ' + quizData.questions.length + ' questions' : quizData.questions.length + ' questions';
+  var modeLabel = gameMode === 'tower' ? 'Tower Defense' : gameMode === 'survival' ? 'Survival' : 'Study Mode';
+  document.getElementById('qpMeta').textContent = (quizData.subject ? quizData.subject + ' \u00b7 ' : '') + modeLabel;
   showScreen('quizPlay');
   renderDots();
   loadQuestion();
 }
 
 function renderDots() {
+  if (gameMode !== 'study') return;
   var dots = document.getElementById('progressDots');
   var total = quizData.questions.length;
   dots.innerHTML = '';
@@ -960,15 +1229,23 @@ function renderDots() {
 }
 
 function loadQuestion() {
-  var q = quizData.questions[currentQ];
+  var qIndex = (gameMode === 'study') ? currentQ : (endlessQuestionIndex % quizData.questions.length);
+  var q = quizData.questions[qIndex];
 
   document.getElementById('qpScore').textContent = score;
   document.getElementById('qpStreak').textContent = streak;
-  document.getElementById('qpNum').textContent = 'Question ' + (currentQ + 1) + ' of ' + quizData.questions.length;
+  if (gameMode === 'study') {
+    document.getElementById('qpNum').textContent = 'Question ' + (currentQ + 1) + ' of ' + quizData.questions.length;
+  } else {
+    document.getElementById('qpNum').textContent = 'Question ' + (totalQuestionsAnswered + 1);
+  }
   document.getElementById('qpQuestion').textContent = q.question;
   document.getElementById('explanationBar').style.display = 'none';
   document.getElementById('explanationBar').className = 'explanation-bar';
   renderDots();
+
+  if (gameMode === 'tower') updateTowerHUD();
+  if (gameMode === 'survival') updateSurvivalHUD();
 
   var grid = document.getElementById('choicesGrid');
   var letters = ['A', 'B', 'C', 'D'];
@@ -980,12 +1257,16 @@ function loadQuestion() {
     '</button>';
   }).join('');
 
-  timeLeft = 30;
+  currentTimerDuration = 30;
+  if (gameMode === 'survival') {
+    currentTimerDuration = Math.max(10, survivalTimerBase - Math.floor(totalQuestionsAnswered / 5) * 0.5);
+  }
+  timeLeft = currentTimerDuration;
   document.getElementById('timerFill').style.width = '100%';
   clearInterval(timerInterval);
   timerInterval = setInterval(function() {
     timeLeft -= 0.1;
-    var pct = Math.max(0, (timeLeft / 30) * 100);
+    var pct = Math.max(0, (timeLeft / currentTimerDuration) * 100);
     document.getElementById('timerFill').style.width = pct + '%';
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
@@ -995,14 +1276,27 @@ function loadQuestion() {
 }
 
 function timesUp() {
-  var q = quizData.questions[currentQ];
+  var qIndex = (gameMode === 'study') ? currentQ : (endlessQuestionIndex % quizData.questions.length);
+  var q = quizData.questions[qIndex];
   var btns = document.querySelectorAll('.choice-btn');
   btns.forEach(function(b) {
     b.classList.add('disabled');
     if (b.dataset.letter === q.correct) b.classList.add('flash-right');
   });
   streak = 0;
-  dotResults[currentQ] = 'skipped';
+
+  if (gameMode === 'study') {
+    dotResults[currentQ] = 'skipped';
+  } else if (gameMode === 'tower') {
+    towerHP = Math.max(0, towerHP - 3);
+    updateTowerHUD();
+    flashScreen('damage');
+  } else if (gameMode === 'survival') {
+    survivalLives--;
+    updateSurvivalHUD();
+    flashScreen('damage');
+  }
+
   document.getElementById('qpStreak').textContent = streak;
   renderDots();
 
@@ -1015,19 +1309,22 @@ function timesUp() {
 
 function pickAnswer(letter, btn) {
   clearInterval(timerInterval);
-  var q = quizData.questions[currentQ];
+  var qIndex = (gameMode === 'study') ? currentQ : (endlessQuestionIndex % quizData.questions.length);
+  var q = quizData.questions[qIndex];
   var isCorrect = letter === q.correct;
   var btns = document.querySelectorAll('.choice-btn');
   btns.forEach(function(b) { b.classList.add('disabled'); });
 
-  dotResults[currentQ] = isCorrect;
+  if (gameMode === 'study') dotResults[currentQ] = isCorrect;
+
   if (isCorrect) {
     btn.classList.add('flash-right');
     streak++;
     correctCount++;
+    if (streak > bestStreak) bestStreak = streak;
     var points = 100;
     if (streak >= 3) points += 50;
-    points += Math.round((timeLeft / 30) * 50);
+    points += Math.round((timeLeft / currentTimerDuration) * 50);
     score += points;
     spawnConfetti(25);
 
@@ -1037,10 +1334,31 @@ function pickAnswer(letter, btn) {
       void box.offsetWidth;
       box.querySelector('.hud-streak').classList.add('fire');
     }
+
+    if (gameMode === 'tower') {
+      var goldEarned = 10 + (streak >= 2 ? 5 : 0);
+      towerGold += goldEarned;
+      while (towerGold >= 15) { towerGold -= 15; towerCount++; }
+      updateTowerHUD();
+      flashScreen('heal');
+    } else if (gameMode === 'survival') {
+      updateSurvivalHUD();
+      flashScreen('heal');
+    }
   } else {
     btn.classList.add('flash-wrong');
     btns.forEach(function(b) { if (b.dataset.letter === q.correct) b.classList.add('flash-right'); });
     streak = 0;
+
+    if (gameMode === 'tower') {
+      towerHP = Math.max(0, towerHP - 3);
+      updateTowerHUD();
+      flashScreen('damage');
+    } else if (gameMode === 'survival') {
+      survivalLives--;
+      updateSurvivalHUD();
+      flashScreen('damage');
+    }
   }
 
   document.getElementById('qpScore').textContent = score;
@@ -1055,20 +1373,34 @@ function pickAnswer(letter, btn) {
 }
 
 function nextQuestion() {
-  currentQ++;
-  if (currentQ >= quizData.questions.length) {
-    endQuiz();
+  if (gameMode === 'study') {
+    currentQ++;
+    if (currentQ >= quizData.questions.length) { endQuiz(); return; }
   } else {
-    var card = document.querySelector('.question-card');
-    card.style.animation = 'none';
-    void card.offsetWidth;
-    card.style.animation = 'cardIn .4s cubic-bezier(.16,1,.3,1)';
-    loadQuestion();
+    totalQuestionsAnswered++;
+    endlessQuestionIndex++;
+    // Reshuffle when we loop through all questions
+    if (endlessQuestionIndex % quizData.questions.length === 0) shuffleQuestions();
+    // Check game over
+    if (gameMode === 'tower' && towerHP <= 0) { gameOver(); return; }
+    if (gameMode === 'survival' && survivalLives <= 0) { gameOver(); return; }
+    // Update tower wave
+    if (gameMode === 'tower') {
+      towerWave = Math.floor(totalQuestionsAnswered / 5) + 1;
+      updateTowerHUD();
+    }
   }
+
+  var card = document.querySelector('.question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'cardIn .4s cubic-bezier(.16,1,.3,1)';
+  loadQuestion();
 }
 
 function endQuiz() {
   clearInterval(timerInterval);
+  document.getElementById('endCard').classList.remove('show-game-over');
   var total = quizData.questions.length;
   var pct = Math.round((correctCount / total) * 100);
 
@@ -1085,13 +1417,82 @@ function endQuiz() {
   saveQuizResult();
 }
 
+function gameOver() {
+  clearInterval(timerInterval);
+  document.getElementById('endCard').classList.add('show-game-over');
+
+  if (gameMode === 'tower') {
+    document.getElementById('gameOverIcon').textContent = '💥';
+    document.getElementById('gameOverTitle').textContent = 'Base Destroyed!';
+  } else {
+    document.getElementById('gameOverIcon').textContent = '💀';
+    document.getElementById('gameOverTitle').textContent = 'Game Over!';
+  }
+
+  fillEndlessStats();
+  showScreen('quizEnd');
+}
+
+function fillEndlessStats() {
+  var statsEl = document.getElementById('gameOverStats');
+  var accuracy = totalQuestionsAnswered > 0 ? Math.round((correctCount / totalQuestionsAnswered) * 100) : 0;
+  var html = '<div class="stat-box"><div class="stat-val">' + score.toLocaleString() + '</div><div class="stat-label">Score</div></div>';
+  html += '<div class="stat-box"><div class="stat-val">' + totalQuestionsAnswered + '</div><div class="stat-label">Questions</div></div>';
+  html += '<div class="stat-box"><div class="stat-val">' + accuracy + '%</div><div class="stat-label">Accuracy</div></div>';
+  html += '<div class="stat-box"><div class="stat-val">' + bestStreak + '</div><div class="stat-label">Best Streak</div></div>';
+  if (gameMode === 'tower') {
+    html += '<div class="stat-box"><div class="stat-val">' + towerCount + '</div><div class="stat-label">Towers Built</div></div>';
+    html += '<div class="stat-box"><div class="stat-val">' + towerWave + '</div><div class="stat-label">Wave</div></div>';
+  }
+  statsEl.innerHTML = html;
+}
+
+function updateTowerHUD() {
+  document.getElementById('towerHPText').textContent = towerHP + '/' + towerMaxHP;
+  document.getElementById('towerCountText').textContent = towerCount;
+  document.getElementById('towerGoldText').textContent = towerGold;
+  document.getElementById('towerWaveText').textContent = towerWave;
+  var pct = Math.max(0, (towerHP / towerMaxHP) * 100);
+  document.getElementById('hpFill').style.width = pct + '%';
+  document.getElementById('hpBarLabel').textContent = towerHP + '/' + towerMaxHP;
+}
+
+function updateSurvivalHUD() {
+  var hearts = '';
+  for (var i = 0; i < survivalMaxLives; i++) {
+    if (i < survivalLives) hearts += '❤️';
+    else hearts += '<span class="heart-empty">🖤</span>';
+  }
+  document.getElementById('survivalHeartsText').innerHTML = hearts;
+  document.getElementById('survivalScoreText').textContent = score;
+  document.getElementById('survivalSurvivedText').textContent = totalQuestionsAnswered;
+}
+
+function flashScreen(type) {
+  var el = document.getElementById('quizPlay');
+  el.classList.remove('flash-damage', 'flash-heal');
+  void el.offsetWidth;
+  el.classList.add(type === 'damage' ? 'flash-damage' : 'flash-heal');
+}
+
 function quitQuiz() {
   clearInterval(timerInterval);
-  showScreen('home');
+  if (gameMode !== 'study') {
+    document.getElementById('endCard').classList.add('show-game-over');
+    document.getElementById('gameOverIcon').textContent = '🏳️';
+    document.getElementById('gameOverTitle').textContent = 'Game Summary';
+    fillEndlessStats();
+    showScreen('quizEnd');
+  } else {
+    showScreen('home');
+  }
 }
 
 function retryQuiz() {
-  if (quizData) startQuiz();
+  if (quizData) {
+    if (gameMode !== 'study') showModePicker();
+    else startQuiz();
+  }
 }
 
 // ─── Subject Picker ───
@@ -1133,7 +1534,7 @@ async function generateSubjectQuiz() {
     if (data.raw) throw new Error('Could not parse quiz. Please try again.');
 
     quizData = data;
-    startQuiz();
+    showModePicker();
   } catch (err) {
     alert('Error: ' + err.message);
   }
@@ -1349,7 +1750,7 @@ async function retakeFromHistory(quizId) {
     if (data.error) throw new Error(data.error);
     quizData = data;
     hideLoading();
-    startQuiz();
+    showModePicker();
   } catch (err) {
     hideLoading();
     alert('Error: ' + err.message);
@@ -1364,6 +1765,663 @@ function escapeHtml(str) {
 
 // Check session on load
 checkSession();
+
+// ─── Tower Defense Game ───
+var TD_COLS = 14, TD_ROWS = 9, TD_CELL = 50;
+var TD_PATH = [
+  [0,1],[1,1],[2,1],[3,1],[4,1],[5,1],
+  [5,2],[5,3],
+  [6,3],[7,3],[8,3],[9,3],
+  [9,4],[9,5],
+  [8,5],[7,5],[6,5],[5,5],[4,5],[3,5],[2,5],
+  [2,6],[2,7],
+  [3,7],[4,7],[5,7],[6,7],[7,7],[8,7],[9,7],[10,7],[11,7],[12,7],[13,7]
+];
+var TD_PATH_SET = {};
+TD_PATH.forEach(function(p) { TD_PATH_SET[p[0] + ',' + p[1]] = true; });
+var TD_WAYPOINTS = TD_PATH.map(function(p) { return { x: p[0] * TD_CELL + TD_CELL / 2, y: p[1] * TD_CELL + TD_CELL / 2 }; });
+
+var TD_TOWER_TYPES = {
+  arrow:  { name:'Arrow',  emoji:'🏹', cost:15, range:2.5, damage:10,  cooldown:800,  color:'#3b82f6' },
+  cannon: { name:'Cannon', emoji:'💣', cost:25, range:1.8, damage:25,  cooldown:1500, color:'#ef4444', splash:0.8 },
+  ice:    { name:'Ice',    emoji:'❄️', cost:20, range:2.2, damage:5,   cooldown:1000, color:'#06b6d4', slow:true },
+  sniper: { name:'Sniper', emoji:'🎯', cost:35, range:4.0, damage:40,  cooldown:2500, color:'#a855f7' }
+};
+
+var td = {
+  canvas:null, ctx:null,
+  state:'PLACING', lives:25, gold:100, wave:0, score:0,
+  towers:[], enemies:[], shots:[], particles:[], floatTexts:[],
+  selectedTower:null, hoverCell:null,
+  spawnQueue:[], spawnTimer:0,
+  questionIndex:0, questionsCorrect:0, qNum:0,
+  animFrame:null, lastTime:0,
+  speed:1, decorations:[]
+};
+
+function tdLighten(hex, amt) {
+  var r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
+  r = Math.min(255, r + amt); g = Math.min(255, g + amt); b = Math.min(255, b + amt);
+  return '#' + ((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+}
+
+function tdGenDecorations() {
+  td.decorations = [];
+  var types = ['🌲','🌳','🪨','🌿','🌻','🌾'];
+  for (var i = 0; i < 40; i++) {
+    var col = Math.floor(Math.random() * TD_COLS);
+    var row = Math.floor(Math.random() * TD_ROWS);
+    if (TD_PATH_SET[col+','+row]) continue;
+    var nearPath = false;
+    for (var dc = -1; dc <= 1 && !nearPath; dc++) {
+      for (var dr = -1; dr <= 1 && !nearPath; dr++) {
+        if (TD_PATH_SET[(col+dc)+','+(row+dr)]) nearPath = true;
+      }
+    }
+    if (nearPath && Math.random() > 0.3) continue;
+    td.decorations.push({
+      x: col * TD_CELL + 8 + Math.random() * (TD_CELL - 16),
+      y: row * TD_CELL + 8 + Math.random() * (TD_CELL - 16),
+      emoji: types[Math.floor(Math.random() * types.length)],
+      size: 10 + Math.random() * 8,
+      col: col, row: row
+    });
+  }
+}
+
+function startTowerDefense() {
+  td.canvas = document.getElementById('tdCanvas');
+  td.ctx = td.canvas.getContext('2d');
+  td.state = 'PLACING';
+  td.lives = 25; td.gold = 100; td.wave = 0; td.score = 0;
+  td.towers = []; td.enemies = []; td.shots = []; td.particles = []; td.floatTexts = [];
+  td.selectedTower = null; td.hoverCell = null;
+  td.spawnQueue = []; td.spawnTimer = 0;
+  td.questionIndex = 0; td.speed = 1;
+  tdGenDecorations();
+
+  showScreen('towerDefense');
+  document.getElementById('tdStartWaveBtn').disabled = false;
+  document.getElementById('tdSpeedBtn').textContent = '1x';
+  document.getElementById('tdInfo').textContent = 'Select a tower and click on the map to place it';
+  document.querySelectorAll('.td-tower-btn').forEach(function(b) { b.classList.remove('selected'); });
+  tdUpdateHUD();
+
+  td.canvas.onclick = tdCanvasClick;
+  td.canvas.onmousemove = tdCanvasHover;
+  td.canvas.onmouseleave = function() { td.hoverCell = null; };
+
+  if (td.animFrame) cancelAnimationFrame(td.animFrame);
+  td.lastTime = performance.now();
+  tdGameLoop(td.lastTime);
+}
+
+function tdToggleSpeed() {
+  td.speed = td.speed === 1 ? 2 : td.speed === 2 ? 3 : 1;
+  document.getElementById('tdSpeedBtn').textContent = td.speed + 'x';
+}
+
+function tdCanvasClick(e) {
+  var rect = td.canvas.getBoundingClientRect();
+  var scale = td.canvas.width / rect.width;
+  var col = Math.floor((e.clientX - rect.left) * scale / TD_CELL);
+  var row = Math.floor((e.clientY - rect.top) * scale / TD_CELL);
+  if (col < 0 || col >= TD_COLS || row < 0 || row >= TD_ROWS) return;
+  if (td.state !== 'PLACING') return;
+
+  // Click existing tower to sell
+  var existingIdx = -1;
+  td.towers.forEach(function(t, idx) { if (t.col === col && t.row === row) existingIdx = idx; });
+  if (existingIdx >= 0) {
+    var tower = td.towers[existingIdx];
+    var refund = Math.floor(TD_TOWER_TYPES[tower.type].cost * 0.5);
+    td.gold += refund;
+    td.towers.splice(existingIdx, 1);
+    td.floatTexts.push({x: col*TD_CELL+TD_CELL/2, y: row*TD_CELL+TD_CELL/2, text:'+'+refund+'g', color:'#fbbf24', timer:1000});
+    tdUpdateHUD();
+    return;
+  }
+
+  if (!td.selectedTower) return;
+  if (TD_PATH_SET[col + ',' + row]) return;
+  var type = TD_TOWER_TYPES[td.selectedTower];
+  if (td.gold < type.cost) return;
+
+  td.gold -= type.cost;
+  td.towers.push({
+    col:col, row:row, type:td.selectedTower,
+    lastShot:0, range:type.range, damage:type.damage, cooldown:type.cooldown
+  });
+  td.decorations = td.decorations.filter(function(d) { return d.col !== col || d.row !== row; });
+  tdUpdateHUD();
+}
+
+function tdCanvasHover(e) {
+  var rect = td.canvas.getBoundingClientRect();
+  var scale = td.canvas.width / rect.width;
+  var col = Math.floor((e.clientX - rect.left) * scale / TD_CELL);
+  var row = Math.floor((e.clientY - rect.top) * scale / TD_CELL);
+  td.hoverCell = (col >= 0 && col < TD_COLS && row >= 0 && row < TD_ROWS) ? {col:col, row:row} : null;
+}
+
+function tdSelectTower(type) {
+  td.selectedTower = (td.selectedTower === type) ? null : type;
+  document.querySelectorAll('.td-tower-btn').forEach(function(btn, i) {
+    var types = ['arrow','cannon','ice','sniper'];
+    btn.classList.toggle('selected', types[i] === td.selectedTower);
+  });
+}
+
+function tdStartWave() {
+  if (td.state !== 'PLACING') return;
+  td.wave++;
+  td.state = 'WAVING';
+  td.selectedTower = null;
+  document.querySelectorAll('.td-tower-btn').forEach(function(b) { b.classList.remove('selected'); });
+  document.getElementById('tdStartWaveBtn').disabled = true;
+  document.getElementById('tdInfo').textContent = 'Wave ' + td.wave + ' incoming!';
+
+  var count = 5 + Math.floor(td.wave * 1.5);
+  td.spawnQueue = [];
+  for (var i = 0; i < count; i++) {
+    var hp = 30 + td.wave * 12;
+    var speed = 0.8 + Math.min(td.wave * 0.04, 0.8);
+    var gold = 3 + Math.floor(td.wave * 0.5);
+    var color = '#ef4444';
+    var radius = 0.22;
+    var isBoss = false, isTank = false, isFast = false;
+    if (td.wave % 5 === 0 && i === count - 1) {
+      hp *= 5; speed *= 0.55; gold *= 4; color = '#7c3aed'; radius = 0.34; isBoss = true;
+    } else if (i % 4 === 0 && td.wave > 3) {
+      hp *= 2; speed *= 0.7; gold = Math.floor(gold * 1.5); color = '#64748b'; radius = 0.28; isTank = true;
+    } else if (i % 3 === 0 && td.wave > 2) {
+      speed *= 1.5; hp *= 0.5; gold = Math.floor(gold * 0.8); color = '#f59e0b'; radius = 0.16; isFast = true;
+    }
+    td.spawnQueue.push({ hp:hp, maxHp:hp, speed:speed, gold:gold, color:color, radius:radius, isBoss:isBoss, isTank:isTank, isFast:isFast, hitTimer:0 });
+  }
+  td.spawnTimer = 0;
+
+  var banner = document.createElement('div');
+  banner.className = 'td-wave-banner';
+  banner.textContent = 'Wave ' + td.wave;
+  document.querySelector('.td-canvas-wrap').appendChild(banner);
+  setTimeout(function() { banner.remove(); }, 2000);
+  tdUpdateHUD();
+}
+
+function tdGameLoop(now) {
+  var rawDt = Math.min(now - td.lastTime, 50);
+  var dt = rawDt * td.speed;
+  td.lastTime = now;
+
+  if (td.state === 'WAVING') {
+    tdSpawn(dt);
+    tdMoveEnemies(dt);
+    tdFireTowers(now);
+    tdUpdateShots(dt);
+    if (td.spawnQueue.length === 0 && td.enemies.length === 0) tdWaveComplete();
+  }
+
+  tdUpdateParticles(rawDt);
+  tdUpdateFloatTexts(rawDt);
+  tdRender();
+  td.animFrame = requestAnimationFrame(tdGameLoop);
+}
+
+function tdSpawn(dt) {
+  if (td.spawnQueue.length === 0) return;
+  td.spawnTimer += dt;
+  if (td.spawnTimer >= 600) {
+    td.spawnTimer = 0;
+    var e = td.spawnQueue.shift();
+    e.pathIndex = 0; e.pathProgress = 0;
+    e.x = TD_PATH[0][0] * TD_CELL + TD_CELL / 2;
+    e.y = TD_PATH[0][1] * TD_CELL + TD_CELL / 2;
+    e.slowTimer = 0;
+    td.enemies.push(e);
+    tdUpdateHUD();
+  }
+}
+
+function tdMoveEnemies(dt) {
+  for (var i = td.enemies.length - 1; i >= 0; i--) {
+    var e = td.enemies[i];
+    var spd = e.speed * (e.slowTimer > 0 ? 0.4 : 1);
+    e.slowTimer = Math.max(0, e.slowTimer - dt);
+    e.hitTimer = Math.max(0, e.hitTimer - dt);
+    e.pathProgress += spd * dt / 1000;
+
+    while (e.pathProgress >= 1 && e.pathIndex < TD_PATH.length - 1) {
+      e.pathProgress -= 1;
+      e.pathIndex++;
+    }
+
+    if (e.pathIndex >= TD_PATH.length - 1 && e.pathProgress >= 1) {
+      td.lives -= (e.isBoss ? 3 : 1);
+      td.enemies.splice(i, 1);
+      tdUpdateHUD();
+      if (td.lives <= 0) { td.lives = 0; tdUpdateHUD(); td.state = 'GAME_OVER'; tdGameOver(); return; }
+      continue;
+    }
+
+    var curr = TD_PATH[e.pathIndex];
+    var next = TD_PATH[Math.min(e.pathIndex + 1, TD_PATH.length - 1)];
+    var p = Math.min(e.pathProgress, 1);
+    e.x = (curr[0] + (next[0] - curr[0]) * p) * TD_CELL + TD_CELL / 2;
+    e.y = (curr[1] + (next[1] - curr[1]) * p) * TD_CELL + TD_CELL / 2;
+  }
+}
+
+function tdKillEnemy(e) {
+  td.gold += e.gold;
+  td.score += e.gold * 10;
+  for (var j = 0; j < 6; j++) {
+    var angle = Math.random() * Math.PI * 2;
+    var spd = 40 + Math.random() * 60;
+    td.particles.push({
+      x: e.x, y: e.y,
+      vx: Math.cos(angle) * spd, vy: Math.sin(angle) * spd,
+      life: 500 + Math.random() * 300, maxLife: 800,
+      color: e.color, size: 3 + Math.random() * 3
+    });
+  }
+  td.floatTexts.push({x: e.x, y: e.y, text: '+' + e.gold + 'g', color: '#fbbf24', timer: 900});
+  tdUpdateHUD();
+}
+
+function tdFireTowers(now) {
+  td.towers.forEach(function(tower) {
+    var effectiveCooldown = tower.cooldown / td.speed;
+    if (now - tower.lastShot < effectiveCooldown) return;
+    var type = TD_TOWER_TYPES[tower.type];
+    var tcx = tower.col * TD_CELL + TD_CELL / 2;
+    var tcy = tower.row * TD_CELL + TD_CELL / 2;
+    var rangePx = tower.range * TD_CELL;
+
+    var best = null, bestScore = -1;
+    td.enemies.forEach(function(e) {
+      var dx = e.x - tcx, dy = e.y - tcy;
+      if (Math.sqrt(dx * dx + dy * dy) <= rangePx) {
+        var s = e.pathIndex + e.pathProgress;
+        if (s > bestScore) { bestScore = s; best = e; }
+      }
+    });
+    if (!best) return;
+    tower.lastShot = now;
+
+    if (type.splash) {
+      var splPx = type.splash * TD_CELL;
+      td.enemies.forEach(function(e) {
+        var dx = e.x - best.x, dy = e.y - best.y;
+        if (Math.sqrt(dx * dx + dy * dy) <= splPx) { e.hp -= type.damage; e.hitTimer = 150; }
+      });
+      td.particles.push({
+        x: best.x, y: best.y, vx:0, vy:0,
+        life: 300, maxLife: 300,
+        color: type.color, size: splPx, isRing: true
+      });
+    } else {
+      best.hp -= type.damage;
+      best.hitTimer = 150;
+    }
+    if (type.slow) best.slowTimer = 1500;
+
+    td.shots.push({ x1:tcx, y1:tcy, x2:best.x, y2:best.y, timer:180, color:type.color });
+
+    for (var i = td.enemies.length - 1; i >= 0; i--) {
+      if (td.enemies[i].hp <= 0) {
+        tdKillEnemy(td.enemies[i]);
+        td.enemies.splice(i, 1);
+      }
+    }
+  });
+}
+
+function tdUpdateShots(dt) {
+  for (var i = td.shots.length - 1; i >= 0; i--) {
+    td.shots[i].timer -= dt;
+    if (td.shots[i].timer <= 0) td.shots.splice(i, 1);
+  }
+}
+
+function tdUpdateParticles(dt) {
+  for (var i = td.particles.length - 1; i >= 0; i--) {
+    var p = td.particles[i];
+    p.life -= dt;
+    if (p.life <= 0) { td.particles.splice(i, 1); continue; }
+    p.x += p.vx * dt / 1000;
+    p.y += p.vy * dt / 1000;
+    p.vy += 80 * dt / 1000;
+  }
+}
+
+function tdUpdateFloatTexts(dt) {
+  for (var i = td.floatTexts.length - 1; i >= 0; i--) {
+    var ft = td.floatTexts[i];
+    ft.timer -= dt;
+    ft.y -= 30 * dt / 1000;
+    if (ft.timer <= 0) td.floatTexts.splice(i, 1);
+  }
+}
+
+function tdWaveComplete() {
+  td.state = 'QUESTIONS';
+  td.questionsCorrect = 0; td.qNum = 0;
+  td.gold += 5 + td.wave * 2;
+  td.score += 50 * td.wave;
+  tdUpdateHUD();
+  setTimeout(tdShowQuestion, 800);
+}
+
+function tdShowQuestion() {
+  if (td.qNum >= 3) {
+    var bonus = td.questionsCorrect * 10;
+    if (td.questionsCorrect === 3) bonus += 15;
+    td.gold += bonus;
+    td.score += bonus * 5;
+    tdUpdateHUD();
+    document.getElementById('tdQuestionOverlay').classList.remove('active');
+    td.state = 'PLACING';
+    document.getElementById('tdStartWaveBtn').disabled = false;
+    document.getElementById('tdInfo').textContent =
+      (td.questionsCorrect === 3 ? 'Perfect! ' : '') + '+' + bonus + ' gold bonus! Place towers and send the next wave.';
+    return;
+  }
+
+  var qIdx = td.questionIndex % quizData.questions.length;
+  var q = quizData.questions[qIdx];
+  td.questionIndex++;
+
+  document.getElementById('tdQProgress').textContent = 'Question ' + (td.qNum + 1) + '/3';
+  document.getElementById('tdQText').textContent = q.question;
+  document.getElementById('tdQResult').textContent = '';
+
+  var letters = ['A','B','C','D'];
+  var colors = ['#e8424a','#2d70c9','#d89b18','#26a269'];
+  document.getElementById('tdQChoices').innerHTML = letters.map(function(L, i) {
+    return '<button class="td-q-choice" style="background:' + colors[i] + '" onclick="tdAnswer(\'' + L + '\',this)" data-letter="' + L + '">' +
+      '<span style="font-weight:800;min-width:20px">' + L + '</span><span>' + q.choices[L] + '</span></button>';
+  }).join('');
+
+  document.getElementById('tdQuestionOverlay').classList.add('active');
+}
+
+function tdAnswer(letter, btn) {
+  var qIdx = (td.questionIndex - 1) % quizData.questions.length;
+  var q = quizData.questions[qIdx];
+  var ok = letter === q.correct;
+  var btns = document.querySelectorAll('.td-q-choice');
+  btns.forEach(function(b) { b.classList.add('disabled'); });
+
+  if (ok) {
+    btn.classList.add('flash-right');
+    td.questionsCorrect++;
+    document.getElementById('tdQResult').textContent = '✅ Correct!';
+    document.getElementById('tdQResult').style.color = '#059669';
+  } else {
+    btn.classList.add('flash-wrong');
+    btns.forEach(function(b) { if (b.dataset.letter === q.correct) b.classList.add('flash-right'); });
+    document.getElementById('tdQResult').textContent = '❌ Answer: ' + q.correct;
+    document.getElementById('tdQResult').style.color = '#ef4444';
+  }
+  td.qNum++;
+  setTimeout(tdShowQuestion, 1500);
+}
+
+function tdRoundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
+
+function tdRender() {
+  var ctx = td.ctx, C = TD_CELL;
+  if (!ctx) return;
+  var W = td.canvas.width, H = td.canvas.height;
+
+  // Gradient grass
+  var grassGrad = ctx.createLinearGradient(0, 0, 0, H);
+  grassGrad.addColorStop(0, '#4a9e3f');
+  grassGrad.addColorStop(0.5, '#3a8832');
+  grassGrad.addColorStop(1, '#2d7228');
+  ctx.fillStyle = grassGrad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Subtle row shading
+  for (var row = 0; row < TD_ROWS; row++) {
+    if (row % 2 === 0) {
+      ctx.fillStyle = 'rgba(255,255,255,.02)';
+      ctx.fillRect(0, row * C, W, C);
+    }
+  }
+
+  // Smooth road path
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(TD_WAYPOINTS[0].x, TD_WAYPOINTS[0].y);
+  for (var i = 1; i < TD_WAYPOINTS.length; i++) ctx.lineTo(TD_WAYPOINTS[i].x, TD_WAYPOINTS[i].y);
+  ctx.strokeStyle = 'rgba(0,0,0,.18)';
+  ctx.lineWidth = C * 0.78;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(TD_WAYPOINTS[0].x, TD_WAYPOINTS[0].y);
+  for (var i = 1; i < TD_WAYPOINTS.length; i++) ctx.lineTo(TD_WAYPOINTS[i].x, TD_WAYPOINTS[i].y);
+  ctx.strokeStyle = '#6b5a3e';
+  ctx.lineWidth = C * 0.72;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(TD_WAYPOINTS[0].x, TD_WAYPOINTS[0].y);
+  for (var i = 1; i < TD_WAYPOINTS.length; i++) ctx.lineTo(TD_WAYPOINTS[i].x, TD_WAYPOINTS[i].y);
+  ctx.strokeStyle = '#8B7355';
+  ctx.lineWidth = C * 0.6;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(TD_WAYPOINTS[0].x, TD_WAYPOINTS[0].y);
+  for (var i = 1; i < TD_WAYPOINTS.length; i++) ctx.lineTo(TD_WAYPOINTS[i].x, TD_WAYPOINTS[i].y);
+  ctx.setLineDash([8, 12]);
+  ctx.strokeStyle = 'rgba(255,255,255,.12)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  // Start/end markers
+  ctx.font = (C*0.65)+'px serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('▶', TD_WAYPOINTS[0].x, TD_WAYPOINTS[0].y);
+  ctx.fillText('🏠', TD_WAYPOINTS[TD_WAYPOINTS.length-1].x, TD_WAYPOINTS[TD_WAYPOINTS.length-1].y);
+
+  // Decorations
+  td.decorations.forEach(function(d) {
+    ctx.font = d.size + 'px serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.7;
+    ctx.fillText(d.emoji, d.x, d.y);
+    ctx.globalAlpha = 1;
+  });
+
+  // Hover cell
+  if (td.hoverCell && td.state === 'PLACING') {
+    var hc = td.hoverCell;
+    var onPath = TD_PATH_SET[hc.col+','+hc.row];
+    var existingTower = td.towers.find(function(t) { return t.col===hc.col && t.row===hc.row; });
+
+    if (existingTower) {
+      var etype = TD_TOWER_TYPES[existingTower.type];
+      var ecx = existingTower.col*C+C/2, ecy = existingTower.row*C+C/2;
+      ctx.beginPath();
+      ctx.arc(ecx, ecy, existingTower.range*C, 0, Math.PI*2);
+      ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = 'rgba(239,68,68,.15)';
+      ctx.fillRect(hc.col*C, hc.row*C, C, C);
+      ctx.font = '10px ' + getComputedStyle(document.body).fontFamily;
+      ctx.fillStyle = 'rgba(255,255,255,.7)';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+      ctx.fillText('Sell ' + Math.floor(etype.cost*0.5) + 'g', ecx, ecy - C*0.35);
+      ctx.textBaseline = 'middle';
+    } else if (td.selectedTower) {
+      var canPlace = !onPath && td.gold >= TD_TOWER_TYPES[td.selectedTower].cost;
+      ctx.fillStyle = canPlace ? 'rgba(16,185,129,.25)' : 'rgba(239,68,68,.25)';
+      ctx.fillRect(hc.col*C, hc.row*C, C, C);
+      if (canPlace) {
+        ctx.beginPath();
+        ctx.arc(hc.col*C+C/2, hc.row*C+C/2, TD_TOWER_TYPES[td.selectedTower].range*C, 0, Math.PI*2);
+        ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1.5; ctx.stroke();
+        ctx.fillStyle = 'rgba(255,255,255,.04)'; ctx.fill();
+        ctx.globalAlpha = 0.5;
+        ctx.font = (C*0.55)+'px serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(TD_TOWER_TYPES[td.selectedTower].emoji, hc.col*C+C/2, hc.row*C+C/2);
+        ctx.globalAlpha = 1;
+      }
+    }
+  }
+
+  // Towers
+  td.towers.forEach(function(t) {
+    var type = TD_TOWER_TYPES[t.type];
+    var cx = t.col*C+C/2, cy = t.row*C+C/2;
+    ctx.beginPath(); ctx.arc(cx, cy+2, C*0.38, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,.2)'; ctx.fill();
+    var tGrad = ctx.createRadialGradient(cx, cy-2, 0, cx, cy, C*0.38);
+    tGrad.addColorStop(0, tdLighten(type.color, 40));
+    tGrad.addColorStop(1, type.color);
+    ctx.beginPath(); ctx.arc(cx, cy, C*0.38, 0, Math.PI*2);
+    ctx.fillStyle = tGrad; ctx.globalAlpha = 0.35; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.font = (C*0.55)+'px serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(type.emoji, cx, cy);
+  });
+
+  // Enemies
+  td.enemies.forEach(function(e) {
+    var r = C * (e.radius || 0.22);
+    if (e.slowTimer > 0) {
+      ctx.beginPath(); ctx.arc(e.x, e.y, r+5, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(6,182,212,.25)'; ctx.fill();
+      ctx.strokeStyle = 'rgba(6,182,212,.4)'; ctx.lineWidth = 1; ctx.stroke();
+    }
+    if (e.isBoss) {
+      ctx.beginPath(); ctx.arc(e.x, e.y, r+8, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(124,58,237,.15)'; ctx.fill();
+    }
+    var eGrad = ctx.createRadialGradient(e.x-r*0.3, e.y-r*0.3, 0, e.x, e.y, r);
+    var bodyColor = e.hitTimer > 0 ? '#ffffff' : e.color;
+    eGrad.addColorStop(0, tdLighten(bodyColor, 50));
+    eGrad.addColorStop(1, bodyColor);
+    ctx.beginPath(); ctx.arc(e.x, e.y, r, 0, Math.PI*2);
+    ctx.fillStyle = eGrad; ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 1.5; ctx.stroke();
+    var eyeOff = r * 0.3, eyeR = r * 0.18;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath(); ctx.arc(e.x - eyeOff, e.y - r*0.1, eyeR, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(e.x + eyeOff, e.y - r*0.1, eyeR, 0, Math.PI*2); ctx.fill();
+    ctx.fillStyle = '#111';
+    ctx.beginPath(); ctx.arc(e.x - eyeOff + 1, e.y - r*0.1, eyeR*0.55, 0, Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(e.x + eyeOff + 1, e.y - r*0.1, eyeR*0.55, 0, Math.PI*2); ctx.fill();
+    var bw = C*0.6, bh = 4, by = e.y - r - 7;
+    ctx.fillStyle = 'rgba(0,0,0,.5)';
+    tdRoundRect(ctx, e.x-bw/2, by, bw, bh, 2); ctx.fill();
+    var pct = Math.max(0, e.hp/e.maxHp);
+    ctx.fillStyle = pct>.5?'#22c55e':pct>.25?'#eab308':'#ef4444';
+    tdRoundRect(ctx, e.x-bw/2, by, bw*pct, bh, 2); ctx.fill();
+  });
+
+  // Shots (glowing lasers)
+  td.shots.forEach(function(s) {
+    var alpha = s.timer / 180;
+    ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2);
+    ctx.strokeStyle = s.color; ctx.lineWidth = 5;
+    ctx.globalAlpha = alpha * 0.3; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(s.x1, s.y1); ctx.lineTo(s.x2, s.y2);
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
+    ctx.globalAlpha = alpha; ctx.stroke();
+    ctx.globalAlpha = 1;
+  });
+
+  // Particles
+  td.particles.forEach(function(p) {
+    var alpha = Math.max(0, p.life / p.maxLife);
+    ctx.globalAlpha = alpha;
+    if (p.isRing) {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * (1 - alpha * 0.5), 0, Math.PI*2);
+      ctx.strokeStyle = p.color; ctx.lineWidth = 2; ctx.stroke();
+    } else {
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.size * alpha, 0, Math.PI*2);
+      ctx.fillStyle = p.color; ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+
+  // Floating texts
+  td.floatTexts.forEach(function(ft) {
+    var alpha = Math.max(0, ft.timer / 900);
+    ctx.globalAlpha = alpha;
+    ctx.font = 'bold 13px ' + getComputedStyle(document.body).fontFamily;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.strokeStyle = 'rgba(0,0,0,.5)'; ctx.lineWidth = 3;
+    ctx.strokeText(ft.text, ft.x, ft.y);
+    ctx.fillStyle = ft.color;
+    ctx.fillText(ft.text, ft.x, ft.y);
+    ctx.globalAlpha = 1;
+  });
+
+  // Vignette
+  var vigGrad = ctx.createRadialGradient(W/2, H/2, Math.min(W,H)*0.35, W/2, H/2, Math.max(W,H)*0.7);
+  vigGrad.addColorStop(0, 'rgba(0,0,0,0)');
+  vigGrad.addColorStop(1, 'rgba(0,0,0,.15)');
+  ctx.fillStyle = vigGrad;
+  ctx.fillRect(0, 0, W, H);
+}
+
+function tdUpdateHUD() {
+  document.getElementById('tdLives').textContent = td.lives;
+  document.getElementById('tdGold').textContent = td.gold;
+  document.getElementById('tdWave').textContent = td.wave;
+  document.getElementById('tdScore').textContent = td.score;
+  var enemyCount = td.enemies.length + td.spawnQueue.length;
+  document.getElementById('tdEnemies').textContent = enemyCount;
+  document.getElementById('tdEnemies').parentElement.style.display = td.state === 'WAVING' ? 'flex' : 'none';
+}
+
+function tdGameOver() {
+  if (td.animFrame) cancelAnimationFrame(td.animFrame);
+  document.getElementById('endCard').classList.add('show-game-over');
+  document.getElementById('gameOverIcon').textContent = '💥';
+  document.getElementById('gameOverTitle').textContent = 'Base Destroyed!';
+  var h = '<div class="stat-box"><div class="stat-val">' + td.score.toLocaleString() + '</div><div class="stat-label">Score</div></div>';
+  h += '<div class="stat-box"><div class="stat-val">' + td.wave + '</div><div class="stat-label">Wave</div></div>';
+  h += '<div class="stat-box"><div class="stat-val">' + td.towers.length + '</div><div class="stat-label">Towers</div></div>';
+  document.getElementById('gameOverStats').innerHTML = h;
+  showScreen('quizEnd');
+}
+
+function tdQuit() {
+  if (td.animFrame) cancelAnimationFrame(td.animFrame);
+  if (td.wave > 0) {
+    document.getElementById('endCard').classList.add('show-game-over');
+    document.getElementById('gameOverIcon').textContent = '🏳️';
+    document.getElementById('gameOverTitle').textContent = 'Game Summary';
+    var h = '<div class="stat-box"><div class="stat-val">' + td.score.toLocaleString() + '</div><div class="stat-label">Score</div></div>';
+    h += '<div class="stat-box"><div class="stat-val">' + td.wave + '</div><div class="stat-label">Waves</div></div>';
+    h += '<div class="stat-box"><div class="stat-val">' + td.towers.length + '</div><div class="stat-label">Towers</div></div>';
+    document.getElementById('gameOverStats').innerHTML = h;
+    showScreen('quizEnd');
+  } else {
+    showScreen('home');
+  }
+}
 
 // ─── Confetti ───
 function spawnConfetti(count) {
